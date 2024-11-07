@@ -12,7 +12,7 @@ export const useRecipeStore = defineStore("recipe", {
     async fetchRecipes() {
       try {
         const response = await axios.get(
-          "https://raw.githubusercontent.com/micahcochran/jsoncookbook/refs/heads/main/cookbook-100.json"
+          "https://raw.githubusercontent.com/micahcochran/json-cookbook/refs/heads/main/cookbook-100.json"
         );
         this.recipes = response.data;
       } catch (error) {
