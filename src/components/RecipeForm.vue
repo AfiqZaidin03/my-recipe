@@ -157,72 +157,62 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useRecipeStore } from "../store/recipeStore";
 import { Recipe } from "../types/Recipe";
 
-export default defineComponent({
-  name: "RecipeForm",
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const recipeStore = useRecipeStore();
+const route = useRoute();
+const router = useRouter();
+const recipeStore = useRecipeStore();
 
-    const isEditing = computed(() => !!route.params.name);
-    const form = ref<Recipe>({
-      name: "",
-      url: "",
-      image: [],
-      author: { name: "" },
-      datePublished: "",
-      dateModified: "",
-      description: "",
-      prepTime: "",
-      cookTime: "",
-      totalTime: "",
-      keywords: "",
-      recipeCuisine: "",
-      recipeCategory: "",
-      recipeIngredient: [],
-      recipeInstructions: [],
-      isFavorite: false,
-    });
-
-    onMounted(() => {
-      if (isEditing.value) {
-        const recipe = recipeStore.recipes.find(
-          (r) => r.name === route.params.name
-        );
-        if (recipe) {
-          form.value = { ...recipe };
-        }
-      }
-    });
-
-    const saveRecipe = () => {
-      if (isEditing.value) {
-        recipeStore.updateRecipe(form.value);
-      } else {
-        recipeStore.addRecipe(form.value);
-      }
-      router.push("/");
-    };
-
-    const deleteRecipe = () => {
-      if (confirm("Are you sure you want to delete this recipe?")) {
-        recipeStore.deleteRecipe(form.value.name);
-        router.push("/");
-      }
-    };
-
-    return {
-      form,
-      isEditing,
-      saveRecipe,
-      deleteRecipe,
-    };
-  },
+const isEditing = computed(() => !!route.params.name);
+const form = ref<Recipe>({
+  name: "",
+  url: "",
+  image: [],
+  author: { name: "" },
+  datePublished: "",
+  dateModified: "",
+  description: "",
+  prepTime: "",
+  cookTime: "",
+  totalTime: "",
+  keywords: "",
+  recipeCuisine: "",
+  recipeCategory: "",
+  recipeIngredient: [],
+  recipeInstructions: [],
+  isFavorite: false,
 });
+
+onMounted(() => {
+  if (isEditing.value) {
+    const recipe = recipeStore.recipes.find(
+      (r) => r.name === route.params.name
+    );
+    if (recipe) {
+      form.value = { ...recipe };
+    }
+  }
+
+  recipeStore.loadRecipesFromLocalStorage();
+});
+
+const saveRecipe = () => {
+  if (isEditing.value) {
+    recipeStore.updateRecipe(form.value);
+  } else {
+    recipeStore.addRecipe(form.value);
+  }
+  router.push("/");
+};
+
+const deleteRecipe = () => {
+  if (confirm("Are you sure you want to delete this recipe?")) {
+    recipeStore.deleteRecipe(form.value.name);
+    router.push("/");
+  }
+};
 </script>
