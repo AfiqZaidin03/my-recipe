@@ -5,12 +5,12 @@
       v-if="favorites.length > 0"
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
     >
-      <recipe-card
+      <RecipeCard
         v-for="recipe in favorites"
         :key="recipe.name"
         :recipe="recipe"
         @click="goToRecipeDetails(recipe.name)"
-      ></recipe-card>
+      ></RecipeCard>
     </div>
     <div v-else class="text-center py-8">
       <p class="text-2xl text-gray-600">

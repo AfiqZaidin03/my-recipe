@@ -14,6 +14,7 @@ export interface Recipe {
   recipeCategory: string;
   recipeIngredient: string[];
   recipeInstructions: RecipeInstruction[];
+  isFavorite?: boolean;
 }
 
 export interface Author {
