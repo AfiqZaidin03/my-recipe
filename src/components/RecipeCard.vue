@@ -11,7 +11,7 @@
     <div class="p-4">
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-bold mb-2">{{ recipe.name }}</h2>
-        <button @click="toggleFavorite" class="text-2xl">
+        <button @click.stop="toggleFavorite" class="text-2xl">
           {{ isRecipeFavorite ? "❤️" : "🤍" }}
         </button>
       </div>
@@ -23,38 +23,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, computed } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import { Recipe } from "../types/Recipe";
 import { useRecipeStore } from "../store/recipeStore";
 
-export default defineComponent({
-  name: "RecipeCard",
-  props: {
-    recipe: {
-      type: Object as PropType<Recipe>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const recipeStore = useRecipeStore();
+const props = defineProps<{
+  recipe: Recipe;
+}>();
 
-    const isRecipeFavorite = computed(() =>
-      recipeStore.favorites.some((fav) => fav.name === props.recipe.name)
-    );
+const recipeStore = useRecipeStore();
 
-    const toggleFavorite = () => {
-      if (isRecipeFavorite.value) {
-        recipeStore.removeFromFavorites(props.recipe.name);
-      } else {
-        recipeStore.addToFavorites({ ...props.recipe, isFavorite: true });
-      }
-    };
+const isRecipeFavorite = computed(() =>
+  recipeStore.favorites.some((fav) => fav.name === props.recipe.name)
+);
 
-    return {
-      isRecipeFavorite,
-      toggleFavorite,
-    };
-  },
-});
+const toggleFavorite = () => {
+  if (isRecipeFavorite.value) {
+    recipeStore.removeFromFavorites(props.recipe.name);
+  } else {
+    recipeStore.addToFavorites({ ...props.recipe, isFavorite: true });
+  }
+};
 </script>
