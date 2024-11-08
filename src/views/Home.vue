@@ -28,50 +28,36 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
 import RecipeCard from "../components/RecipeCard.vue";
 import { useRouter } from "vue-router";
 import { useRecipeStore } from "../store/recipeStore";
 
-export default defineComponent({
-  name: "Home",
-  components: {
-    RecipeCard,
-  },
-  setup() {
-    const router = useRouter();
-    const recipeStore = useRecipeStore();
-    const searchQuery = ref("");
+const router = useRouter();
+const recipeStore = useRecipeStore();
+const searchQuery = ref("");
 
-    onMounted(() => {
-      recipeStore.fetchRecipes();
-    });
-
-    const filteredRecipes = computed(() => {
-      return recipeStore.recipes.filter(
-        (recipe) =>
-          recipe.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-          recipe.recipeIngredient.some((ingredient) =>
-            ingredient.toLowerCase().includes(searchQuery.value.toLowerCase())
-          )
-      );
-    });
-
-    const goToRecipeForm = (event: MouseEvent, name?: string) => {
-      event.preventDefault();
-      if (name) {
-        router.push({ name: "RecipeForm", params: { name } });
-      } else {
-        router.push({ name: "RecipeForm" });
-      }
-    };
-
-    return {
-      searchQuery,
-      filteredRecipes,
-      goToRecipeForm,
-    };
-  },
+onMounted(() => {
+  recipeStore.fetchRecipes();
 });
+
+const filteredRecipes = computed(() => {
+  return recipeStore.recipes.filter(
+    (recipe) =>
+      recipe.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      recipe.recipeIngredient.some((ingredient) =>
+        ingredient.toLowerCase().includes(searchQuery.value.toLowerCase())
+      )
+  );
+});
+
+const goToRecipeForm = (event: MouseEvent, name?: string) => {
+  event.preventDefault();
+  if (name) {
+    router.push({ name: "RecipeForm", params: { name } });
+  } else {
+    router.push({ name: "RecipeForm" });
+  }
+};
 </script>
