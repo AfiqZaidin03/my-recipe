@@ -118,7 +118,7 @@
         ></textarea>
       </div>
 
-      <div class="flex items-center">
+      <!-- <div class="flex items-center">
         <input
           v-model="form.isFavorite"
           id="isFavorite"
@@ -128,7 +128,7 @@
         <label for="isFavorite" class="ml-2 block text-sm text-gray-900"
           >Favorite</label
         >
-      </div>
+      </div> -->
 
       <div class="flex justify-end space-x-3">
         <button
