@@ -19,24 +19,46 @@ export const useRecipeStore = defineStore("recipe", {
         console.error("Error fetching recipes:", error);
       }
     },
+
     addToFavorites(recipe: Recipe) {
       if (!this.favorites.some((fav) => fav.name === recipe.name)) {
         this.favorites.push(recipe);
         this.saveFavoritesToLocalStorage();
       }
     },
+
     removeFromFavorites(recipeName: string) {
       this.favorites = this.favorites.filter((fav) => fav.name !== recipeName);
       this.saveFavoritesToLocalStorage();
     },
+
     saveFavoritesToLocalStorage() {
       localStorage.setItem("favorites", JSON.stringify(this.favorites));
     },
+
     loadFavoritesFromLocalStorage() {
       const storedFavorites = localStorage.getItem("favorites");
       if (storedFavorites) {
         this.favorites = JSON.parse(storedFavorites);
       }
+    },
+
+    addRecipe(recipe: Recipe) {
+      this.recipes.push(recipe);
+    },
+
+    updateRecipe(updatedRecipe: Recipe) {
+      const index = this.recipes.findIndex(
+        (r) => r.name === updatedRecipe.name
+      );
+      if (index !== -1) {
+        this.recipes[index] = updatedRecipe;
+      }
+    },
+
+    deleteRecipe(recipeName: string) {
+      this.recipes = this.recipes.filter((r) => r.name !== recipeName);
+      this.removeFromFavorites(recipeName);
     },
   },
 });
