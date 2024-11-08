@@ -20,29 +20,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { useRecipeStore } from "../store/recipeStore";
 import RecipeCard from "../components/RecipeCard.vue";
 
-export default defineComponent({
-  name: "Favorites",
-  setup() {
-    const router = useRouter();
-    const recipeStore = useRecipeStore();
-    const favorites = computed(() => recipeStore.favorites);
+const router = useRouter();
+const recipeStore = useRecipeStore();
 
-    const goToRecipeDetails = (name: string) => {
-      router.push({ name: "RecipeDetails", params: { name } });
-    };
+const favorites = computed(() => recipeStore.favorites);
 
-    return {
-      favorites,
-      goToRecipeDetails,
-    };
-  },
-});
+const goToRecipeDetails = (name: string) => {
+  router.push({ name: "RecipeDetails", params: { name } });
+};
 </script>
-
-<style scoped></style>

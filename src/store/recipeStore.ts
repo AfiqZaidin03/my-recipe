@@ -63,5 +63,9 @@ export const useRecipeStore = defineStore("recipe", {
       this.recipes = [...this.recipes];
       this.removeFromFavorites(recipeName);
     },
+
+    initializeStore() {
+      this.loadFavoritesFromLocalStorage();
+    },
   },
 });
