@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
     component: RecipeForm,
   },
   {
-    path: "/recipe/:name/edit",
+    path: "/recipe/:name?/edit",
     name: "RecipeForm",
     component: RecipeForm,
   },
