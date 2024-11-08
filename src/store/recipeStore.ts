@@ -10,13 +10,19 @@ export const useRecipeStore = defineStore("recipe", {
   }),
   actions: {
     async fetchRecipes() {
-      try {
-        const response = await axios.get(
-          "https://raw.githubusercontent.com/micahcochran/json-cookbook/refs/heads/main/cookbook-100.json"
-        );
-        this.recipes = response.data;
-      } catch (error) {
-        console.error("Error fetching recipes:", error);
+      const storedRecipes = localStorage.getItem("recipes");
+      if (storedRecipes) {
+        this.recipes = JSON.parse(storedRecipes);
+      } else {
+        try {
+          const response = await axios.get(
+            "https://raw.githubusercontent.com/micahcochran/json-cookbook/refs/heads/main/cookbook-100.json"
+          );
+          this.recipes = response.data;
+          this.saveRecipesToLocalStorage();
+        } catch (error) {
+          console.error("Error fetching recipes:", error);
+        }
       }
     },
 
@@ -45,7 +51,7 @@ export const useRecipeStore = defineStore("recipe", {
 
     addRecipe(recipe: Recipe) {
       this.recipes.push(recipe);
-      this.recipes = [...this.recipes];
+      this.saveRecipesToLocalStorage();
     },
 
     updateRecipe(updatedRecipe: Recipe) {
@@ -55,16 +61,33 @@ export const useRecipeStore = defineStore("recipe", {
       if (index !== -1) {
         this.recipes[index] = updatedRecipe;
         this.recipes = [...this.recipes];
+        this.saveRecipesToLocalStorage();
       }
     },
 
     deleteRecipe(recipeName: string) {
       this.recipes = this.recipes.filter((r) => r.name !== recipeName);
-      this.recipes = [...this.recipes];
       this.removeFromFavorites(recipeName);
+      this.saveRecipesToLocalStorage();
+    },
+
+    saveRecipesToLocalStorage() {
+      localStorage.setItem("recipes", JSON.stringify(this.recipes));
+    },
+
+    loadRecipesFromLocalStorage() {
+      const storedRecipes = localStorage.getItem("recipes");
+      if (storedRecipes) {
+        this.recipes = JSON.parse(storedRecipes);
+      }
     },
 
     initializeStore() {
+      // this.loadRecipesFromLocalStorage();
+      const storedRecipes = localStorage.getItem("recipes");
+      if (storedRecipes) {
+        this.recipes = JSON.parse(storedRecipes);
+      }
       this.loadFavoritesFromLocalStorage();
     },
   },
