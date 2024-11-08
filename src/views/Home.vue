@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 class="text-3xl font-bold mb-6">Recipes</h1>
-    <div class="mb-4 flex justify-between items-center">
+    <h1 class="text-3xl font-bold mb-6 pl-4 md:pl-0">Recipes</h1>
+    <div class="p-4 md:p-0 mb-4 flex justify-between items-center">
       <input
         v-model="searchQuery"
         type="text"
@@ -16,7 +16,7 @@
       </button>
     </div>
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      class="p-4 md:p-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
     >
       <RecipeCard
         v-for="recipe in filteredRecipes"
