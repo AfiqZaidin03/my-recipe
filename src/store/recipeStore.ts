@@ -45,6 +45,7 @@ export const useRecipeStore = defineStore("recipe", {
 
     addRecipe(recipe: Recipe) {
       this.recipes.push(recipe);
+      this.recipes = [...this.recipes];
     },
 
     updateRecipe(updatedRecipe: Recipe) {
@@ -53,11 +54,13 @@ export const useRecipeStore = defineStore("recipe", {
       );
       if (index !== -1) {
         this.recipes[index] = updatedRecipe;
+        this.recipes = [...this.recipes];
       }
     },
 
     deleteRecipe(recipeName: string) {
       this.recipes = this.recipes.filter((r) => r.name !== recipeName);
+      this.recipes = [...this.recipes];
       this.removeFromFavorites(recipeName);
     },
   },
