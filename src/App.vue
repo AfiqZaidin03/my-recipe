@@ -11,7 +11,7 @@
                 alt="Recipe App Logo"
               />
             </router-link>
-            <div class="mt-4 md:mt-0 ml-4 md:ml-0 sm:ml-6 sm:flex sm:space-x-8">
+            <div class="mt-4 md:mt-0 ml-4 sm:ml-6 sm:flex sm:space-x-8">
               <router-link
                 to="/"
                 class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
