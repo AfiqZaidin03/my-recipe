@@ -12,9 +12,11 @@
           v-model="form.name"
           id="name"
           type="text"
-          required
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
+        <p v-if="validationErrors.name" class="text-red-500 text-sm mt-1">
+          {{ validationErrors.name }}
+        </p>
       </div>
 
       <div>
@@ -37,9 +39,11 @@
           v-model="form.author.name"
           id="author"
           type="text"
-          required
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
+        <p v-if="validationErrors.author" class="text-red-500 text-sm mt-1">
+          {{ validationErrors.author }}
+        </p>
       </div>
 
       <div>
@@ -54,6 +58,12 @@
           type="text"
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
+        <p
+          v-if="validationErrors.recipeCuisine"
+          class="text-red-500 text-sm mt-1"
+        >
+          {{ validationErrors.recipeCuisine }}
+        </p>
       </div>
 
       <div>
@@ -68,6 +78,12 @@
           type="text"
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
+        <p
+          v-if="validationErrors.recipeCategory"
+          class="text-red-500 text-sm mt-1"
+        >
+          {{ validationErrors.recipeCategory }}
+        </p>
       </div>
 
       <div>
@@ -80,6 +96,9 @@
           type="text"
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
+        <p v-if="validationErrors.prepTime" class="text-red-500 text-sm mt-1">
+          {{ validationErrors.prepTime }}
+        </p>
       </div>
 
       <div>
@@ -92,6 +111,9 @@
           type="text"
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
+        <p v-if="validationErrors.cookTime" class="text-red-500 text-sm mt-1">
+          {{ validationErrors.cookTime }}
+        </p>
       </div>
 
       <div>
@@ -104,6 +126,9 @@
           type="text"
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
+        <p v-if="validationErrors.totalTime" class="text-red-500 text-sm mt-1">
+          {{ validationErrors.totalTime }}
+        </p>
       </div>
 
       <div>
@@ -116,19 +141,13 @@
           rows="3"
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         ></textarea>
-      </div>
-
-      <!-- <div class="flex items-center">
-        <input
-          v-model="form.isFavorite"
-          id="isFavorite"
-          type="checkbox"
-          class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        />
-        <label for="isFavorite" class="ml-2 block text-sm text-gray-900"
-          >Favorite</label
+        <p
+          v-if="validationErrors.description"
+          class="text-red-500 text-sm mt-1"
         >
-      </div> -->
+          {{ validationErrors.description }}
+        </p>
+      </div>
 
       <div class="flex justify-end space-x-3">
         <button
@@ -184,8 +203,50 @@ const form = ref<Recipe>({
   recipeCategory: "",
   recipeIngredient: [],
   recipeInstructions: [],
-  isFavorite: false,
 });
+
+const validationErrors = ref({
+  name: "",
+  image: "",
+  author: "",
+  recipeCuisine: "",
+  recipeCategory: "",
+  prepTime: "",
+  cookTime: "",
+  totalTime: "",
+  description: "",
+});
+
+const validateForm = () => {
+  validationErrors.value.name = form.value.name ? "" : "Name is required.";
+  validationErrors.value.author = form.value.author.name
+    ? ""
+    : "Author is required.";
+  validationErrors.value.recipeCuisine = form.value.recipeCuisine
+    ? ""
+    : "Cuisine is required.";
+  validationErrors.value.recipeCategory = form.value.recipeCategory
+    ? ""
+    : "Category is required.";
+  validationErrors.value.prepTime = form.value.prepTime
+    ? ""
+    : "Prep Time is required.";
+  validationErrors.value.cookTime = form.value.cookTime
+    ? ""
+    : "Cook Time is required.";
+  validationErrors.value.totalTime = form.value.totalTime
+    ? ""
+    : "Total Time is required.";
+  validationErrors.value.description = form.value.description
+    ? ""
+    : "Description is required.";
+
+  return (
+    !validationErrors.value.name &&
+    !validationErrors.value.image &&
+    !validationErrors.value.author
+  );
+};
 
 onMounted(() => {
   if (isEditing.value) {
@@ -201,12 +262,14 @@ onMounted(() => {
 });
 
 const saveRecipe = () => {
-  if (isEditing.value) {
-    recipeStore.updateRecipe(form.value);
-  } else {
-    recipeStore.addRecipe(form.value);
+  if (validateForm()) {
+    if (isEditing.value) {
+      recipeStore.updateRecipe(form.value);
+    } else {
+      recipeStore.addRecipe(form.value);
+    }
+    router.push("/");
   }
-  router.push("/");
 };
 
 const deleteRecipe = () => {
