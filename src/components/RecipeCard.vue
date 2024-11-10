@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300"
+    class="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer hover:shadow-lg hover:ring-2 hover:ring-indigo-500 transition-shadow duration-300"
   >
     <img
       v-if="recipe.image && recipe.image.length > 0"
@@ -11,8 +11,16 @@
     <div class="p-4">
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-bold mb-2">{{ recipe.name }}</h2>
-        <button @click.stop="toggleFavorite" class="text-2xl">
-          {{ isRecipeFavorite ? "❤️" : "🤍" }}
+        <button
+          @click.stop="toggleFavorite"
+          class="text-2xl transition duration-300"
+          :class="{
+            'text-red-500': isRecipeFavorite || hoverFavorite,
+          }"
+          @mouseover="hoverFavorite = true"
+          @mouseleave="hoverFavorite = false"
+        >
+          {{ isRecipeFavorite || hoverFavorite ? "❤️" : "🤍" }}
         </button>
       </div>
       <p class="text-blue-600 mb-4 font-light">
@@ -24,13 +32,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { Recipe } from "../types/Recipe";
 import { useRecipeStore } from "../store/recipeStore";
 
 const props = defineProps<{
   recipe: Recipe;
 }>();
+
+const hoverFavorite = ref(false);
 
 const recipeStore = useRecipeStore();
 
