@@ -33,6 +33,7 @@ import { ref, computed, onMounted } from "vue";
 import RecipeCard from "../components/RecipeCard.vue";
 import { useRouter } from "vue-router";
 import { useRecipeStore } from "../store/recipeStore";
+import "vue3-toastify/dist/index.css";
 
 const router = useRouter();
 const recipeStore = useRecipeStore();

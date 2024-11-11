@@ -181,6 +181,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useRecipeStore } from "../store/recipeStore";
 import { Recipe } from "../types/Recipe";
+import { toast } from "vue3-toastify";
 
 const route = useRoute();
 const router = useRouter();
@@ -265,8 +266,10 @@ const saveRecipe = () => {
   if (validateForm()) {
     if (isEditing.value) {
       recipeStore.updateRecipe(form.value);
+      toast.success("Recipe updated successfully!");
     } else {
       recipeStore.addRecipe(form.value);
+      toast.success("Recipe added successfully!");
     }
     router.push("/");
   }
@@ -275,6 +278,7 @@ const saveRecipe = () => {
 const deleteRecipe = () => {
   if (confirm("Are you sure you want to delete this recipe?")) {
     recipeStore.deleteRecipe(form.value.name);
+    toast.success("Recipe deleted successfully!");
     router.push("/");
   }
 };
