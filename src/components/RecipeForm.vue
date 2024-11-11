@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-2xl m-4 p-6 bg-white shadow-md rounded-lg">
+  <div class="max-w-2xl md:mx-auto m-4 p-6 bg-white shadow-md rounded-lg">
     <h2 class="text-2xl font-bold mb-6">
       {{ isEditing ? "Edit Recipe" : "Add New Recipe" }}
     </h2>
