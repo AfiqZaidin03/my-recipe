@@ -50,7 +50,7 @@ export const useRecipeStore = defineStore("recipe", {
     },
 
     addRecipe(recipe: Recipe) {
-      this.recipes.push(recipe);
+      this.recipes.unshift(recipe);
       this.saveRecipesToLocalStorage();
     },
 
