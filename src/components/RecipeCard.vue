@@ -6,7 +6,7 @@
       v-if="recipe.image && recipe.image.length > 0"
       :src="recipe.image[0]"
       :alt="recipe.name"
-      class="w-full h-48 object-cover"
+      class="w-full h-80 md:h-60 object-cover"
     />
     <div class="p-4">
       <div class="flex items-center justify-between">

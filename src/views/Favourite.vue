@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="text-3xl font-bold mb-6">Favorite Recipes</h1>
+    <h1 class="text-3xl font-bold mb-6 pl-4 md:pl-0">Favorite Recipes</h1>
     <div
       v-if="favorites.length > 0"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      class="p-4 md:p-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
     >
       <RecipeCard
         v-for="recipe in favorites"
